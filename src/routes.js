@@ -60,19 +60,24 @@ router.post('/login', (req, res) => {
     var credentials = basicAuth(req)
     const privateKey = process.env.JWT_SECRET_KEY
 
-    if (!credentials) {
+    if (!credentials || credentials.name == "" || credentials.pass == "") {
         console.error('No credentials')
         res.status(401).end('No Credentials')
     } else {
         User
             .findOne({ login: credentials.name, password: credentials.pass })
             .then(result => {
-                name = result.name
-                token = jwt.sign({ name }, privateKey, { expiresIn: 86400 }) // token vale 24h
-                res.status(200).json({ user: name, token: token })
+                if (result == null) {
+                    console.log('Access denied')
+                    res.status(401).end('Access denied')
+                } else {
+                    let name = result.name
+                    let token = jwt.sign({ name }, privateKey, { expiresIn: 86400 }) // token vale 24h
+                    res.status(200).json({ user: name, token: token })
+                }
             })
             .catch(err => {
-                console.log(console.log('Access denied: ', err))
+                console.log('Access denied: ', err)
                 res.status(401).end('Access denied')
             })
     }
