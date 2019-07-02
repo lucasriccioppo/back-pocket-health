@@ -1,8 +1,15 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const { ObjectId } = mongoose.Schema.Types
-
-const Schema = new mongoose.Schema({
+const hospitalSchema = new mongoose.Schema({
+    cnpj: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -12,7 +19,8 @@ const Schema = new mongoose.Schema({
         required: true
     },
     address: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId,
+        ref: 'Adress',
         required: true
     },
     rating: {
@@ -29,4 +37,4 @@ const Schema = new mongoose.Schema({
     }
 }, { versionKey: false })
 
-module.exports = mongoose.model('Hospital', Schema)
+module.exports = mongoose.model('Hospital', hospitalSchema)
