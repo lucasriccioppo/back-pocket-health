@@ -81,7 +81,7 @@ router.post('/institutionLogin', (req, res) => {
 })
 
 router.get('/cep/:cep', (req, res) => {
-    buscaCep(req.params.cep, { sync: false, timeout: 1000 })
+    buscaCep(req.params.cep, { sync: false, timeout: 3000 })
         .then(result => {
             res.send(result)
         })
