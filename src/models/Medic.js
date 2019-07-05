@@ -7,24 +7,21 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    cpf: {
+        type: String,
+        required: true
+    },
     specialty: {
         type: String,
         required: true
     },
-    description: {
-        type: ObjectId,
-        required: true
-    },
-    register: {
+    crm: {
         type: Number,
         required: true
     },
-    rating: {
-        type: String,
-        required: true
-    },
-    autonomous: {
-        type: String,
+    work: {
+        type: ObjectId,
+        ref: 'Intitution',
         required: true
     },
     consultValue: {

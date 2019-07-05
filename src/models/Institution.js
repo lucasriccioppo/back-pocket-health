@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const hospitalSchema = new mongoose.Schema({
+const institutionSchema = new mongoose.Schema({
     cnpj: {
         type: String,
         required: true
@@ -37,4 +37,4 @@ const hospitalSchema = new mongoose.Schema({
     }
 }, { versionKey: false })
 
-module.exports = mongoose.model('Hospital', hospitalSchema)
+module.exports = mongoose.model('Institution', institutionSchema)

@@ -1,26 +1,25 @@
 const mongoose = require('mongoose')
-
+const Schema = mongoose.Schema
 const { ObjectId } = mongoose.Schema.Types
 
-const Schema = new mongoose.Schema({
-    time: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        required: true
-    },
+const consultSchema = new mongoose.Schema({
     medic: {
         type: ObjectId,
+        ref: 'Medic',
+        required: true
+    },
+    institution: {
+        type: ObjectId,
+        ref: 'Intitution',
+        required: true 
+    },
+    Date: {
+        type: Date,
         required: true
     },
     patient: {
         type: ObjectId,
-        required: true
-    },
-    avaible: {
-        type: String,
+        ref: 'User',
         required: true
     },
     createdAt: {
@@ -29,4 +28,4 @@ const Schema = new mongoose.Schema({
     }
 }, { versionKey: false })
 
-module.exports = mongoose.model('Schedule', Schema)
+module.exports = mongoose.model('Consult', consultSchema)
