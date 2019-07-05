@@ -5,7 +5,7 @@ const Consult = require('./models/Consult');
 const Institution = require('./models/Institution');
 const basicAuth = require('basic-auth');
 const jwt = require('jsonwebtoken');
-var buscaCep = require('busca-cep');
+const buscaCep = require('busca-cep');
 
 router.post('/institution', (req, res) => {
 
@@ -54,7 +54,7 @@ router.post('/institution', (req, res) => {
 });
 
 router.post('/institutionLogin', (req, res) => {
-    var credentials = basicAuth(req)
+    const credentials = basicAuth(req)
     const privateKey = process.env.JWT_SECRET_KEY
 
     if (!credentials || credentials.name == "" || credentials.pass == "") {
@@ -112,6 +112,25 @@ router.get('/consults/:medic', (req, res) => {
         .catch(err => {
             console.log('Error: ', err)
             res.status(401).end('Bad Request')
+        })
+});
+
+router.post('/consult', (req, res) => {
+    let consult = new Consult({
+        medic: req.body.medic,
+        institution: req.body.institution,
+        date: req.body.date,
+        patient: req.body.patient
+    })
+
+    consult
+        .save()
+        .then(result => {
+            res.send({message: "consult created", consult: result})
+        })
+        .catch(err => {
+            console.log("Error: ", err)
+            res.status(400).end('Bad Request')
         })
 });
 
