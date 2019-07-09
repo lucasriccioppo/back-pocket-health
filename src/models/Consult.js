@@ -10,7 +10,7 @@ const consultSchema = new mongoose.Schema({
     },
     institution: {
         type: ObjectId,
-        ref: 'Intitution',
+        ref: 'Institution',
         required: true 
     },
     Date: {
