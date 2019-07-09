@@ -154,11 +154,10 @@ router.get('/consults/:medic', (req, res) => {
 });
 
 router.post('/consult', (req, res) => {
-    console.log(req.body)
     let consult = new Consult({
         medic: req.body.medic,
         institution: req.body.institution,
-        Date: req.body.date,
+        Date: req.body.Date,
         patient: req.body.patient
     })
 
@@ -218,5 +217,51 @@ router.post('/medic', (req, res) => {
             res.status(400).send("Error")
         })
 });
+
+router.post('/user', (req, res) => {
+
+    let complement = req.body.complement ? req.body.complement : ''
+
+    let address = new Address({
+        cep: req.body.cep,
+        street: req.body.street,
+        number: req.body.number,
+        complement: complement,
+        city: req.body.city,
+        state: req.body.state
+    })
+
+    address
+        .save()
+        .then(result => {
+            let user = new User({
+                name: req.body.name,
+                login: req.body.login,
+                password: req.body.password,
+                age: req.body.age,
+                cpf: req.body.cpf,
+                address: result._id
+            })
+
+            user
+                .save()
+                .then(result => {
+                    console.log(result)
+                    res.status(201).json({
+                        message: "usersaved",
+                        user: result
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).send("Error")
+                })
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(400).send("Error")
+        })
+});
+
 
 module.exports = router
