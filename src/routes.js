@@ -132,6 +132,8 @@ router.get('/patient/:name', (req, res) => {
 router.get('/consults/:institution', (req, res) => {
     Consult
         .find({ institution: req.params.institution })
+        .populate('medic')
+        .populate('patient')
         .then(result => {
             res.send(result)
         })
