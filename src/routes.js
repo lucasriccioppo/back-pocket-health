@@ -8,6 +8,8 @@ const User = require('./models/User');
 const basicAuth = require('basic-auth');
 const jwt = require('jsonwebtoken');
 const buscaCep = require('busca-cep');
+const checkToken = require('./authenticatioon/jwtMiddleware')
+
 
 router.post('/institution', (req, res) => {
 
@@ -93,7 +95,7 @@ router.get('/cep/:cep', (req, res) => {
         });
 });
 
-router.get('/institution/:id', (req, res) => {
+router.get('/institution/:id', checkToken, (req, res) => {
     Institution
         .find({ _id: req.params.id })
         .then(result => {
@@ -105,7 +107,7 @@ router.get('/institution/:id', (req, res) => {
         })
 });
 
-router.get('/medic/:name', (req, res) => {
+router.get('/medic/:name', checkToken, (req, res) => {
     Medic
         .findOne({ name: req.params.name })
         .then(result => {
@@ -117,7 +119,7 @@ router.get('/medic/:name', (req, res) => {
         })
 });
 
-router.get('/patient/:name', (req, res) => {
+router.get('/patient/:name', checkToken, (req, res) => {
     User
         .findOne({ name: req.params.name })
         .then(result => {
@@ -129,7 +131,7 @@ router.get('/patient/:name', (req, res) => {
         })
 });
 
-router.get('/consults/:institution/:date', (req, res) => {
+router.get('/consults/:institution/:date', checkToken, (req, res) => {
     
     let formDate = new Date(req.params.date)
 
@@ -139,8 +141,6 @@ router.get('/consults/:institution/:date', (req, res) => {
 
     let beforeDate = new Date(year, month, day)
     let afterDate = new Date(year, month, day+1)
-
-    console.log('year: ',year, ', month: ', month, ', day: ', day )
 
     Consult
         .find({
@@ -158,7 +158,7 @@ router.get('/consults/:institution/:date', (req, res) => {
         })
 });
 
-router.get('/consults/:medic', (req, res) => {
+router.get('/consults/:medic', checkToken, (req, res) => {
     Consult
         .find({ medic: req.params.medic })
         .then(result => {
@@ -170,7 +170,7 @@ router.get('/consults/:medic', (req, res) => {
         })
 });
 
-router.post('/consult', (req, res) => {
+router.post('/consult', checkToken, (req, res) => {
     let consult = new Consult({
         medic: req.body.medic,
         institution: req.body.institution,
@@ -189,7 +189,7 @@ router.post('/consult', (req, res) => {
         })
 });
 
-router.post('/medic', (req, res) => {
+router.post('/medic', checkToken, (req, res) => {
 
     let complement = req.body.complement ? req.body.complement : ''
 
@@ -265,7 +265,7 @@ router.post('/user', (req, res) => {
                 .then(result => {
                     console.log(result)
                     res.status(201).json({
-                        message: "usersaved",
+                        message: "user saved",
                         user: result
                     })
                 })
