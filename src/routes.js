@@ -138,7 +138,7 @@ router.get('/consults/:institution/:date', (req, res) => {
     let day = formDate.getDate()
 
     let beforeDate = new Date(year, month, day)
-    let afterDate = new Date(year, month, day)
+    let afterDate = new Date(year, month, day+1)
 
     console.log('year: ',year, ', month: ', month, ', day: ', day )
 
