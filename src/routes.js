@@ -129,9 +129,24 @@ router.get('/patient/:name', (req, res) => {
         })
 });
 
-router.get('/consults/:institution', (req, res) => {
+router.get('/consults/:institution/:date', (req, res) => {
+    
+    let formDate = new Date(req.params.date)
+
+    let year = formDate.getFullYear()
+    let month = formDate.getMonth()
+    let day = formDate.getDate()
+
+    let beforeDate = new Date(year, month, day)
+    let afterDate = new Date(year, month, day)
+
+    console.log('year: ',year, ', month: ', month, ', day: ', day )
+
     Consult
-        .find({ institution: req.params.institution })
+        .find({
+            institution: req.params.institution,
+            Date: {$gte: beforeDate, $lt: afterDate}
+        })
         .populate('medic')
         .populate('patient')
         .then(result => {
